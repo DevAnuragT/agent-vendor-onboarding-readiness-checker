@@ -1,0 +1,22 @@
+{
+  "required_controls": [
+    "security",
+    "privacy"
+  ],
+  "evidence": [
+    {
+      "control": "security",
+      "artifact": "sec-1",
+      "owner": "alice",
+      "reviewed": true,
+      "days_until_expiry": 120
+    },
+    {
+      "control": "privacy",
+      "artifact": "dp-1",
+      "owner": "bob",
+      "reviewed": true,
+      "days_until_expiry": 60
+    }
+  ]
+}

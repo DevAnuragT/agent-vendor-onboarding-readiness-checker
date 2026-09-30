@@ -1,0 +1,15 @@
+{
+  "required_controls": [
+    "security",
+    "privacy"
+  ],
+  "evidence": [
+    {
+      "control": "security",
+      "artifact": "",
+      "owner": "",
+      "reviewed": false,
+      "days_until_expiry": -1
+    }
+  ]
+}

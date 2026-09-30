@@ -1,0 +1,11 @@
+spec_version: "0.1.0"
+name: vendor-onboarding-readiness-checker
+version: 0.1.0
+description: "Checks vendor onboarding evidence for requested controls, named ownership, expiry, and review status."
+skills:
+  - vendor-onboarding-readiness-checker-skill
+tools:
+  - audit-vendor-onboarding-readiness-checker
+tags:
+  - "vendor-operations"
+  - evidence-driven

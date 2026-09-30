@@ -1,0 +1,52 @@
+{
+  "slug": "vendor-onboarding-readiness-checker",
+  "title": "Vendor Onboarding Readiness Checker",
+  "category": "Vendor Operations",
+  "description": "Checks vendor onboarding evidence for requested controls, named ownership, expiry, and review status.",
+  "decision": "Onboarding evidence is ready for human review when every required control has a current, reviewed artifact and an owner.",
+  "inputs": "The caller supplies required control IDs and evidence records with artifact reference, owner, review state, and days until expiry.",
+  "limitations": "This does not assess vendor trustworthiness, certify compliance, or replace procurement, legal, privacy, or security review.",
+  "good": {
+    "required_controls": [
+      "security",
+      "privacy"
+    ],
+    "evidence": [
+      {
+        "control": "security",
+        "artifact": "sec-1",
+        "owner": "alice",
+        "reviewed": true,
+        "days_until_expiry": 120
+      },
+      {
+        "control": "privacy",
+        "artifact": "dp-1",
+        "owner": "bob",
+        "reviewed": true,
+        "days_until_expiry": 60
+      }
+    ]
+  },
+  "bad": {
+    "required_controls": [
+      "security",
+      "privacy"
+    ],
+    "evidence": [
+      {
+        "control": "security",
+        "artifact": "",
+        "owner": "",
+        "reviewed": false,
+        "days_until_expiry": -1
+      }
+    ]
+  },
+  "body": "\n        required=payload.get(\"required_controls\"); evidence=payload.get(\"evidence\")\n        if not isinstance(required,list) or not isinstance(evidence,list): raise ValueError(\"required_controls and evidence are required\")\n        records={}\n        for e in evidence:\n            if not isinstance(e,dict): raise ValueError(\"evidence records must be objects\")\n            cid=e.get(\"control\")\n            if cid in records: findings.append(f\"duplicate evidence for {cid}\")\n            records[cid]=e\n        for cid in required:\n            e=records.get(cid)\n            if not e: findings.append(f\"missing evidence for {cid}\"); continue\n            for k in (\"artifact\",\"owner\"):\n                if not isinstance(e.get(k),str) or not e[k].strip(): findings.append(f\"{cid}: {k} missing\")\n            if e.get(\"reviewed\") is not True: findings.append(f\"{cid}: review incomplete\")\n            days=_num(e.get(\"days_until_expiry\"),\"days_until_expiry\",findings)\n            if days<0: findings.append(f\"{cid}: evidence expired\")\n        ",
+  "runtime": "Python 3.9+ standard library",
+  "input_schema": {
+    "type": "object",
+    "description": "The caller supplies required control IDs and evidence records with artifact reference, owner, review state, and days until expiry."
+  }
+}
